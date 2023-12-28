@@ -5,12 +5,14 @@ import {
   deletePost,
   likeUnlikePost,
   replyToPost,
+  getFeedPosts,
 } from "../controllers/postsControllers.js";
 import protectRoute from "../middlewares/protectRoute.js";
 
 const router = express.Router();
 
 router.get("/:id", getPost);
+router.get("/feed", protectRoute, getFeedPosts);
 router.post("/create", protectRoute, createPost);
 router.delete("/:id", protectRoute, deletePost);
 router.post("/like/:id", protectRoute, likeUnlikePost);
