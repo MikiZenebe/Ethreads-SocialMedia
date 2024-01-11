@@ -1,6 +1,7 @@
 import express from "express";
 import connectDB from "./db/connectDB.js";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
@@ -22,7 +23,7 @@ cloudinary.config({
 connectDB();
 
 //Middleware --
-app.use(express.json()); //It allows to parse the incoming data from req
+app.use(express.json({ limit: "50mb" })); //It allows to parse the incoming data from req
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); //Get the cookie from the req & set the cookie inside res
 
