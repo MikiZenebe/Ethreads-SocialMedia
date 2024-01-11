@@ -14,7 +14,7 @@ import { Avatar } from "@chakra-ui/react";
 import { BsInstagram, BsGithub, BsFacebook } from "react-icons/bs";
 import { FaShare } from "react-icons/fa";
 
-export default function UserHeader() {
+export default function UserHeader({ user }) {
   const toast = useToast();
 
   //Copy the username link to clipboard
@@ -47,12 +47,12 @@ export default function UserHeader() {
         p={5}
       >
         <Box>
-          <Avatar name="mikizenebe" src="/profile.jpg" size={"lg"} />
+          <Avatar name="mikizenebe" src={user.profilePic} size={"lg"} />
         </Box>
 
         <Box>
           <Text fontSize={"2xl"} fontWeight={"bold"} textAlign={"center"}>
-            Miki Zenebe
+            {user.name}
           </Text>
 
           <Flex gap={2} alignItems={"center"}>
@@ -64,7 +64,7 @@ export default function UserHeader() {
               mx={"auto"}
               color={"gray.500"}
             >
-              @mikizenebe
+              @{user.username}
             </Text>
 
             <Menu>
@@ -82,7 +82,7 @@ export default function UserHeader() {
         </Box>
 
         <Text textAlign={"center"} alignItems={"center"} mx={"auto"}>
-          ✨ Developer, frontend web developer and UI/UX designer ✨
+          ✨ {user.bio} ✨
         </Text>
         <Flex
           w={"full"}
@@ -98,7 +98,7 @@ export default function UserHeader() {
             alignItems={"center"}
             mx={"auto"}
           >
-            <Text color={"gray.500"}>500 followers</Text>
+            <Text color={"gray.500"}>{user.followers.length} followers</Text>
             <Box w="32" h="1" bg={"gray.500"} borderRadius={"full"}></Box>
           </Flex>
 
