@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -18,7 +19,7 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
-import useShowToast from "../hooks/useShowtoast";
+import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
 
 export default function LoginCard() {
@@ -30,8 +31,10 @@ export default function LoginCard() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
       const res = await fetch("/api/users/login", {
         method: "POST",
@@ -46,13 +49,18 @@ export default function LoginCard() {
         showToast("Error", data.error, "error");
       } else {
         showToast("Success", "User logged in successfully", "success");
-      }
 
+        setTimeout(() => {
+          window.location.replace("/");
+        });
+      }
       //Save to the local storage
       localStorage.setItem("user", JSON.stringify(data));
       setUser(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,7 +127,7 @@ export default function LoginCard() {
 
               <Stack spacing={10} pt={2}>
                 <Button
-                  loadingText="Submitting"
+                  isLoading={loading}
                   size={"lg"}
                   bg={useColorModeValue("#1B2730", "gray.300")}
                   color={useColorModeValue("gray.300", "#1B2730")}

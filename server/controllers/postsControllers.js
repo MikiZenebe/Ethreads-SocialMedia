@@ -9,24 +9,24 @@ export const createPost = async (req, res) => {
     if (!postedBy || !text) {
       return res
         .status(400)
-        .json({ message: "Postedby & text fields are required" });
+        .json({ error: "Postedby & text fields are required" });
     }
 
     //Check if the user is found
     const user = await User.findById(postedBy);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
     if (user._id.toString() !== req.user?._id.toString()) {
-      return res.status(401).json({ message: "Unauthorized to create post" });
+      return res.status(401).json({ error: "Unauthorized to create post" });
     }
 
     const maxLength = 500;
     if (text.length > maxLength) {
       return res
         .status(400)
-        .json({ message: `Text must be less than ${maxLength} chars` });
+        .json({ error: `Text must be less than ${maxLength} chars` });
     }
 
     const newPost = new Post({ postedBy, text, img });

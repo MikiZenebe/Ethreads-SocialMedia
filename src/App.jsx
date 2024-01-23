@@ -1,5 +1,5 @@
 import { Container } from "@chakra-ui/react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import {
   UserPage,
   PostPage,
@@ -7,7 +7,7 @@ import {
   AuthPage,
   UpdateProfile,
 } from "./pages/index";
-import { Header } from "./components/index";
+import { CreatePost, Header } from "./components/index";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom";
 
@@ -24,15 +24,18 @@ export default function App() {
         />
         <Route
           path="/auth"
-          element={!user ? <AuthPage /> : <Navigate to={`/`} />}
+          element={!user ? <AuthPage /> : <Navigate to="/" />}
         />
         <Route
           path="/update"
-          element={user ? <UpdateProfile /> : <Navigate to={`/auth`} />}
+          element={user ? <UpdateProfile /> : <Navigate to="/auth" />}
         />
+
         <Route path="/:username" element={<UserPage />} />
         <Route path="/:username/post/:pid" element={<PostPage />} />
       </Routes>
+
+      {user && <CreatePost />}
     </Container>
   );
 }

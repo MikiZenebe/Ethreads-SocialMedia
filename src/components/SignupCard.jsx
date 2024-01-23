@@ -18,7 +18,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
-import useShowToast from "../hooks/useShowtoast";
+import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
 
 export default function SignupCard() {
@@ -32,8 +32,10 @@ export default function SignupCard() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
+    setLoading(true);
     try {
       const res = await fetch("/api/users/signup", {
         method: "POST",
@@ -48,6 +50,9 @@ export default function SignupCard() {
         showToast("Error", data.error, "error");
       } else {
         showToast("Success", "User registred successfully", "success");
+        setTimeout(() => {
+          window.location.replace("/");
+        });
       }
 
       //Save to the local storage
@@ -55,6 +60,8 @@ export default function SignupCard() {
       setUser(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 

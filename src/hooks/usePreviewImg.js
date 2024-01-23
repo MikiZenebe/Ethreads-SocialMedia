@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useShowToast from "../hooks/useShowtoast";
+import useShowToast from "./useShowToast";
 
 export default function usePreviewImg() {
   const [imgUrl, setImgUrl] = useState(null);
@@ -22,5 +22,5 @@ export default function usePreviewImg() {
     }
   };
 
-  return { handleImageChange, imgUrl };
+  return { handleImageChange, imgUrl, setImgUrl };
 }

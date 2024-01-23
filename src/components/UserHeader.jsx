@@ -9,26 +9,30 @@ import {
   MenuList,
   MenuItem,
   useToast,
+  Button,
 } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/react";
 import { BsInstagram, BsGithub, BsFacebook } from "react-icons/bs";
-import { FaShare } from "react-icons/fa";
+import { FaShare, FaUserPlus, FaUserMinus } from "react-icons/fa";
+import { AiFillSetting } from "react-icons/ai";
+import userAtom from "../atoms/userAtom";
+import { useRecoilValue } from "recoil";
+import { Link } from "react-router-dom";
+
+import useShowToast from "../hooks/useShowToast";
+import useFollowUnfollow from "../hooks/useFollowUnfollow";
 
 export default function UserHeader({ user }) {
-  const toast = useToast();
+  const showToast = useShowToast();
+  const currentUser = useRecoilValue(userAtom); //logged in user
+
+  const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
 
   //Copy the username link to clipboard
   const copyURL = () => {
     const currentURL = window.location.href;
     navigator.clipboard.writeText(currentURL).then(() => {
-      toast({
-        title: "Copied",
-        status: "success",
-        description: "Profile link copied ⚡",
-        duration: 1000,
-        isClosable: true,
-        position: "top",
-      });
+      showToast("Copied", "Profile link copied ⚡", "success");
     });
   };
 
@@ -45,10 +49,31 @@ export default function UserHeader({ user }) {
         alignItems={"center"}
         gap={1}
         p={5}
+        position={"relative"}
       >
         <Box>
           <Avatar name="mikizenebe" src={user.profilePic} size={"lg"} />
         </Box>
+
+        {currentUser._id === user._id && (
+          <Link to={"/update"} className="absolute right-2 top-2">
+            <Button size={"sm"}>
+              <AiFillSetting />
+            </Button>
+          </Link>
+        )}
+
+        {currentUser._id !== user._id && (
+          <Box className="absolute right-2 top-2">
+            <Button
+              onClick={handleFollowUnfollow}
+              isLoading={updating}
+              size={"sm"}
+            >
+              {following ? <FaUserMinus /> : <FaUserPlus />}
+            </Button>
+          </Box>
+        )}
 
         <Box>
           <Text fontSize={"2xl"} fontWeight={"bold"} textAlign={"center"}>

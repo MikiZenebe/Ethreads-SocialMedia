@@ -5,6 +5,7 @@ import ActionButtons from "./ActionButtons";
 import Comment from "./Comment";
 import SignupCard from "./SignupCard";
 import LoginCard from "./LoginCard";
+import CreatePost from "./CreatePost";
 
 export {
   Header,
@@ -14,4 +15,5 @@ export {
   Comment,
   SignupCard,
   LoginCard,
+  CreatePost,
 };
