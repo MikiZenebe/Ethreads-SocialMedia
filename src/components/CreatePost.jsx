@@ -66,7 +66,7 @@ export default function CreatePost() {
         body: JSON.stringify({
           postedBy: user._id,
           text: postText,
-          // img: imgUrl,
+          img: imgUrl,
         }),
       });
 
