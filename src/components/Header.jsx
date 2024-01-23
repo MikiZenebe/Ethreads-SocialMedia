@@ -15,9 +15,9 @@ import { HiSun, HiMoon, HiDotsHorizontal } from "react-icons/hi";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useLogout from "../hooks/useLogout";
-import { FiLogOut, FiLogIn } from "react-icons/fi";
+import { FiLogOut, FiLogIn, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { SettingsIcon } from "@chakra-ui/icons";
+import { useState } from "react";
 
 export default function Header() {
   const user = useRecoilValue(userAtom);
@@ -58,10 +58,10 @@ export default function Header() {
                   <MenuList>
                     <MenuItem>
                       <Flex className="flex-col gap-2 items-center">
-                        <Link to={`/update`}>
+                        <Link to={`/${user.username}`}>
                           <Flex flexDir={"row"} alignItems={"center"} gap={3}>
-                            <span>Update Profile</span>
-                            <SettingsIcon size={20} />
+                            <span>Profile</span>
+                            <FiUser size={20} />
                           </Flex>
                         </Link>
                       </Flex>
