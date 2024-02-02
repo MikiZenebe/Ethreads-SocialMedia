@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UserHeader, UserPost } from "../components";
+import { UserHeader } from "../components";
 import { useParams } from "react-router-dom";
 import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 
@@ -43,7 +43,6 @@ export default function UserPage() {
   return (
     <>
       <UserHeader user={user} />
-      <UserPost />
     </>
   );
 }

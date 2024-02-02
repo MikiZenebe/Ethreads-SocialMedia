@@ -17,6 +17,7 @@ import useShowToast from "../hooks/useShowToast";
 export default function Post({ post, userId, postedBy }) {
   const [liked, setLiked] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [user, setUser] = useState(null);
   const showToast = useShowToast();
 
   useEffect(() => {
@@ -24,11 +25,15 @@ export default function Post({ post, userId, postedBy }) {
       try {
         const res = await fetch(`/api/users/profile/${postedBy}`);
         const data = await res.json();
+        setUser(data);
       } catch (error) {
         showToast("Error", error.message, "error");
+        setUser(null);
       }
     };
-  }, []);
+
+    getUser();
+  }, [postedBy]);
 
   return (
     <Link to={``}>
@@ -50,7 +55,7 @@ export default function Post({ post, userId, postedBy }) {
               alignItems="center"
             >
               <Flex flexDirection="row" alignItems="center" gap="3">
-                <Avatar src="/profile.jpg" />
+                <Avatar src={user?.profilePic} />
                 <Flex flexDirection="column">
                   <Flex gap="1" flexDirection="row" alignItems="center">
                     <Text
@@ -58,11 +63,11 @@ export default function Post({ post, userId, postedBy }) {
                       color={"gray.200"}
                       _light={{ color: "black" }}
                     >
-                      Mikiyas
+                      {user?.name}
                     </Text>
                     <Image w="13px" src="/Verified.svg" />
                     <Text fontSize="11" color={"gray.500"}>
-                      @mikizenebe
+                      @{user?.username}
                     </Text>
                   </Flex>
 
@@ -108,10 +113,14 @@ export default function Post({ post, userId, postedBy }) {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Flex alignItems="center" onClick={(e) => e.preventDefault()}>
-                  {/* <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
-                      <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
-                      <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" /> */}
+                <Flex
+                  alignItems="center"
+                  position={"relative"}
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
+                  <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
+                  <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
                   <Text color={"gray.500"} ml="0.5">
                     {post.likes.length} likes
                   </Text>
