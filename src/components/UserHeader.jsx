@@ -123,7 +123,7 @@ export default function UserHeader({ user }) {
             alignItems={"center"}
             mx={"auto"}
           >
-            <Text color={"gray.500"}>{user.followers.length} followers</Text>
+            <Text color={"gray.500"}>{user.followers?.length} followers</Text>
             <Box w="32" h="1" bg={"gray.500"} borderRadius={"full"}></Box>
           </Flex>
 
