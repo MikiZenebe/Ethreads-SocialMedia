@@ -81,24 +81,25 @@ export const likeUnlikePost = async (req, res) => {
     const userId = req.user._id;
 
     const post = await Post.findById(postId);
+
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({ error: "Post not found" });
     }
 
     const userLikedPost = post.likes.includes(userId);
+
     if (userLikedPost) {
-      //Unlike post
+      // Unlike post
       await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
       res.status(200).json({ message: "Post unliked successfully" });
     } else {
-      //Like post
+      // Like post
       post.likes.push(userId);
       await post.save();
       res.status(200).json({ message: "Post liked successfully" });
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    console.log("Error in like & unlike post: ", error.message);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -124,7 +125,7 @@ export const replyToPost = async (req, res) => {
     post.replies.push(reply);
     await post.save();
 
-    res.status(200).json({ message: "Reply added successfully", post });
+    res.status(200).json({ message: "Reply added successfully", reply });
   } catch (error) {
     res.status(500).json({ message: error.message });
     console.log("Error in reply post: ", error.message);

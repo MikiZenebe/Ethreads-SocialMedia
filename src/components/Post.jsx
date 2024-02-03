@@ -7,18 +7,19 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiDotsHorizontal } from "react-icons/hi";
 import ActionButtons from "./ActionButtons";
 import { useEffect, useState } from "react";
 import ImageModal from "./ImageModal";
 import useShowToast from "../hooks/useShowToast";
+import { formatDistanceToNow } from "date-fns";
 
-export default function Post({ post, userId, postedBy }) {
-  const [liked, setLiked] = useState(false);
+export default function Post({ post, postedBy }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [user, setUser] = useState(null);
   const showToast = useShowToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
@@ -36,7 +37,7 @@ export default function Post({ post, userId, postedBy }) {
   }, [postedBy]);
 
   return (
-    <Link to={``}>
+    <Link to={`${user?.username}/post/${post._id}`}>
       <Flex flexDirection="column">
         <>
           <Flex
@@ -55,13 +56,23 @@ export default function Post({ post, userId, postedBy }) {
               alignItems="center"
             >
               <Flex flexDirection="row" alignItems="center" gap="3">
-                <Avatar src={user?.profilePic} />
+                <Avatar
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(`/${user?.username}`);
+                  }}
+                  src={user?.profilePic}
+                />
                 <Flex flexDirection="column">
                   <Flex gap="1" flexDirection="row" alignItems="center">
                     <Text
                       fontWeight="normal"
                       color={"gray.200"}
                       _light={{ color: "black" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate(`/${user?.username}`);
+                      }}
                     >
                       {user?.name}
                     </Text>
@@ -72,7 +83,7 @@ export default function Post({ post, userId, postedBy }) {
                   </Flex>
 
                   <Text fontSize="11" color={"gray.500"}>
-                    Few hours ago
+                    {formatDistanceToNow(new Date(post.createdAt))} ago
                   </Text>
                 </Flex>
               </Flex>
@@ -106,33 +117,8 @@ export default function Post({ post, userId, postedBy }) {
                 onClose={onClose}
               />
 
-              <Flex
-                w="full"
-                gap="1"
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Flex
-                  alignItems="center"
-                  position={"relative"}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
-                  <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
-                  <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
-                  <Text color={"gray.500"} ml="0.5">
-                    {post.likes.length} likes
-                  </Text>
-                </Flex>
-
-                <Flex>
-                  <Text color={"gray.500"}>{post.replies.length} Comments</Text>
-                </Flex>
-              </Flex>
-
               <Flex>
-                <ActionButtons liked={liked} setLiked={setLiked} />
+                <ActionButtons post={post} />
               </Flex>
             </Flex>
           </Flex>
