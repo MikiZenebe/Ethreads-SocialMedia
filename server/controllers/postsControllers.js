@@ -81,6 +81,7 @@ export const likeUnlikePost = async (req, res) => {
     const userId = req.user._id;
 
     const post = await Post.findById(postId);
+    console.log(post);
 
     if (!post) {
       return res.status(404).json({ error: "Post not found" });

@@ -7,8 +7,9 @@ import useShowToast from "../hooks/useShowToast";
 
 export default function ActionButtons({ post }) {
   const user = useRecoilState(userAtom);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(post?.likes.includes(user?._id));
   const showToast = useShowToast();
+  const [posts, setPosts] = useState(post);
 
   const handleLikeUnlike = async () => {
     if (!user)
@@ -19,7 +20,7 @@ export default function ActionButtons({ post }) {
       );
 
     try {
-      const res = await fetch("/api/posts/like/" + post._id, {
+      const res = await fetch("/api/posts/like/" + posts._id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -27,6 +28,16 @@ export default function ActionButtons({ post }) {
       });
       const data = await res.json();
       console.log(data);
+
+      if (!liked) {
+        //Add the id of the current user to posts.likes array
+        setPosts({ ...posts, likes: [...posts.likes, user._id] });
+      } else {
+        //Remove the id of the current user from post.likes array
+        setPosts({ ...posts, likes: [...posts.likes, user._id] });
+      }
+
+      setLiked(!liked);
       if (data.error) return showToast("Error", data.error, "error");
     } catch (error) {
       showToast("Error", error.message, "error");
@@ -34,7 +45,10 @@ export default function ActionButtons({ post }) {
   };
 
   return (
-    <Flex className="flex flex-col gap-3 w-full">
+    <Flex
+      onClick={(e) => e.preventDefault()}
+      className="flex flex-col gap-3 w-full"
+    >
       <Flex gap="1" flexDirection="row" justifyContent="space-between">
         <Flex alignItems="center" onClick={(e) => e.preventDefault()}>
           <Text>{post?.likes.length} likes</Text>
