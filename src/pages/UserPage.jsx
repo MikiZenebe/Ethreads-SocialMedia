@@ -41,7 +41,7 @@ export default function UserPage() {
 
     getUser();
     getPost();
-  }, [username]);
+  }, [setPosts, username]);
 
   if (!user && loading) {
     return (

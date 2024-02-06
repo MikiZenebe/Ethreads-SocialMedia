@@ -55,7 +55,7 @@ export default function UserHeader({ user }) {
           <Avatar name="mikizenebe" src={user.profilePic} size={"lg"} />
         </Box>
 
-        {currentUser._id === user._id && (
+        {currentUser?._id === user._id && (
           <Link to={"/update"} className="absolute right-2 top-2">
             <Button size={"sm"}>
               <AiFillSetting />
@@ -63,7 +63,7 @@ export default function UserHeader({ user }) {
           </Link>
         )}
 
-        {currentUser._id !== user._id && (
+        {currentUser?._id !== user._id && (
           <Box className="absolute right-2 top-2">
             <Button
               onClick={handleFollowUnfollow}

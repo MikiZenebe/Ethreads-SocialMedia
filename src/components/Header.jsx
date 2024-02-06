@@ -11,13 +11,12 @@ import {
   MenuItem,
   Avatar,
 } from "@chakra-ui/react";
-import { HiSun, HiMoon, HiDotsHorizontal } from "react-icons/hi";
+import { HiSun, HiMoon } from "react-icons/hi";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useLogout from "../hooks/useLogout";
 import { FiLogOut, FiLogIn, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 export default function Header() {
   const user = useRecoilValue(userAtom);

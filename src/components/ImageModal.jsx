@@ -1,22 +1,14 @@
 import {
-  Button,
-  CloseButton,
-  Flex,
   Image,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
-  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 export default function ImageModal({ isOpen, onClose, img }) {
-  const [loading, setLoading] = useState(false);
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
