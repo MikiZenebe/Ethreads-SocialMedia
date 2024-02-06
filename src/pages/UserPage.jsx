@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { UserHeader } from "../components";
+import { Post, UserHeader } from "../components";
 import { useParams } from "react-router-dom";
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Spinner } from "@chakra-ui/react";
+import postsAtom from "../atoms/postsAtom";
+import { useRecoilState } from "recoil";
 
 export default function UserPage() {
   const [user, setUser] = useState(null);
   const { username } = useParams();
   const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useRecoilState(postsAtom);
+  const [fetchingPosts, setFetchingPosts] = useState(true);
 
   useEffect(() => {
     const getUser = async () => {
@@ -20,7 +24,23 @@ export default function UserPage() {
       }
     };
 
+    const getPost = async () => {
+      setFetchingPosts(true);
+
+      try {
+        const res = await fetch(`/api/posts/user/${username}`);
+        const data = await res.json();
+
+        setPosts(data);
+      } catch (error) {
+        setPosts([]);
+      } finally {
+        setFetchingPosts(false);
+      }
+    };
+
     getUser();
+    getPost();
   }, [username]);
 
   if (!user && loading) {
@@ -43,6 +63,25 @@ export default function UserPage() {
   return (
     <>
       <UserHeader user={user} />
+
+      {!fetchingPosts && posts.length === 0 && (
+        <Flex height={"70vh"} justifyContent={"center"} alignItems={"center"}>
+          <Flex fontSize={"4xl"} gap={"3"}>
+            User has not posts
+            <Flex className="animate-bounce">😥</Flex>
+          </Flex>
+        </Flex>
+      )}
+
+      {fetchingPosts && (
+        <Flex justifyContent={"center"} my={"12"}>
+          <Spinner size="xl" />
+        </Flex>
+      )}
+
+      {posts.map((post) => (
+        <Post key={post._id} post={post} postedBy={post.postedBy} />
+      ))}
     </>
   );
 }
