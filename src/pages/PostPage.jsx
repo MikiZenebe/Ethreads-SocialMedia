@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Avatar,
   Box,
@@ -10,32 +11,54 @@ import {
   MenuItem,
   MenuList,
   Portal,
+  Spinner,
   Text,
-  useToast,
 } from "@chakra-ui/react";
 
 import { HiDotsHorizontal } from "react-icons/hi";
 import { ActionButtons, Comment } from "../components/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useGetUserProfile from "../hooks/useGetUserProfile";
+import { formatDistanceToNow } from "date-fns";
+import useShowToast from "../hooks/useShowToast";
+import { useParams } from "react-router-dom";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
 
 export default function PostPage() {
-  const [liked, setLiked] = useState(false);
-  const toast = useToast();
+  const showToast = useShowToast();
+  const { user, loading } = useGetUserProfile();
+  const [post, setPost] = useState(null);
+  const { pid } = useParams();
+  const currentUser = useRecoilValue(userAtom);
 
-  //Copy the username link to clipboard
-  const copyURL = () => {
-    const currentURL = window.location.href;
-    navigator.clipboard.writeText(currentURL).then(() => {
-      toast({
-        title: "Copied",
-        status: "success",
-        description: "Post link copied ⚡",
-        duration: 1000,
-        isClosable: true,
-        position: "top",
-      });
-    });
-  };
+  useEffect(() => {
+    const getPost = async () => {
+      try {
+        const res = await fetch(`/api/posts/${pid}`);
+        const data = await res.json();
+        if (data.error) {
+          showToast("Error", data.error, "error");
+        }
+        setPost(data);
+      } catch (error) {
+        showToast("Error", error.message, "error");
+      }
+    };
+
+    getPost();
+  }, []);
+
+  if (!user && loading) {
+    return (
+      <Flex justifyContent={"center"}>
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
+
+  if (!post) return null;
 
   return (
     <Flex flexDirection="column">
@@ -56,7 +79,7 @@ export default function PostPage() {
             alignItems="center"
           >
             <Flex flexDirection="row" alignItems="center" gap="3">
-              <Avatar src="/profile.jpg" />
+              <Avatar src={user.profilePic} />
               <Flex flexDirection="column">
                 <Flex gap="1" flexDirection="row" alignItems="center">
                   <Text
@@ -64,16 +87,16 @@ export default function PostPage() {
                     color={"gray.200"}
                     _light={{ color: "black" }}
                   >
-                    Mikiyas
+                    {user.name}
                   </Text>
                   <Image w="13px" src="/Verified.svg" />
                   <Text fontSize="11" color={"gray.500"}>
-                    @mikizenebe
+                    @{user.username}
                   </Text>
                 </Flex>
 
                 <Text fontSize="11" color={"gray.500"}>
-                  Few hours ago
+                  {formatDistanceToNow(new Date(post.createdAt))} ago
                 </Text>
               </Flex>
             </Flex>
@@ -81,12 +104,16 @@ export default function PostPage() {
             <Box onClick={(e) => e.preventDefault()} color={"gray.500"}>
               <Menu>
                 <MenuButton>
-                  <HiDotsHorizontal />
+                  {currentUser?._id === user?._id ? (
+                    <DeleteIcon onClick={onOpen} />
+                  ) : (
+                    <HiDotsHorizontal />
+                  )}
                 </MenuButton>
 
                 <Portal>
                   <MenuList>
-                    <MenuItem onClick={copyURL}>Copy post link</MenuItem>
+                    <MenuItem>Copy post link</MenuItem>
                   </MenuList>
                 </Portal>
               </Menu>
@@ -95,18 +122,8 @@ export default function PostPage() {
 
           <Flex mx="4" flexDirection="column" gap="3">
             <Text _light={{ color: "#1B2730" }} _dark={{ color: "gray.100" }}>
-              Developer, frontend web developer and UI/UX designerDeveloper,
-              frontend web developer and UI/UX designer Developer, frontend web
-              developer and UI/UX designer
+              {post.text}
             </Text>
-            <Box
-              borderRadius={10}
-              overflow="hidden"
-              border="1px solid"
-              borderColor="gray.light"
-            >
-              <Image src="/profile.jpg" w="full" h="350px" objectFit="cover" />
-            </Box>
 
             <Flex
               w="full"
@@ -114,23 +131,10 @@ export default function PostPage() {
               flexDirection="row"
               justifyContent="space-between"
               alignItems="center"
-            >
-              <Flex alignItems="center" onClick={(e) => e.preventDefault()}>
-                <Text color={"gray.500"} ml="0.5">
-                  {58 + (liked ? 1 : 0)} likes
-                </Text>
-              </Flex>
-
-              <Flex alignItems="center" onClick={(e) => e.preventDefault()}>
-                {/* <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
-                <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" />
-                <Avatar src="/profile.jpg" w="5" h="5" mx="0.75" /> */}
-                <Text color={"gray.500"}>58 Comments</Text>
-              </Flex>
-            </Flex>
+            ></Flex>
 
             <Flex>
-              <ActionButtons liked={liked} setLiked={setLiked} />
+              <ActionButtons post={post} />
             </Flex>
 
             <Divider my={1} />
@@ -146,9 +150,7 @@ export default function PostPage() {
             </Flex>
 
             <Divider my={1} />
-            <Comment />
-            <Comment />
-            <Comment />
+            {/* <Comment /> */}
           </Flex>
         </Flex>
       </>

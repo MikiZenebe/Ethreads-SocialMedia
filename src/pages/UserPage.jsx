@@ -4,26 +4,15 @@ import { useParams } from "react-router-dom";
 import { Flex, Spinner } from "@chakra-ui/react";
 import postsAtom from "../atoms/postsAtom";
 import { useRecoilState } from "recoil";
+import useGetUserProfile from "../hooks/useGetUserProfile";
 
 export default function UserPage() {
-  const [user, setUser] = useState(null);
+  const { user, loading } = useGetUserProfile();
   const { username } = useParams();
-  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [fetchingPosts, setFetchingPosts] = useState(true);
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await fetch(`/api/users/profile/${username}`);
-        const data = await res.json();
-
-        setUser(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     const getPost = async () => {
       setFetchingPosts(true);
 
@@ -39,7 +28,6 @@ export default function UserPage() {
       }
     };
 
-    getUser();
     getPost();
   }, [setPosts, username]);
 

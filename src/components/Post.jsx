@@ -16,26 +16,18 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { HiDotsHorizontal } from "react-icons/hi";
 import ActionButtons from "./ActionButtons";
 import { useEffect, useState } from "react";
-import ImageModal from "./ImageModal";
 import useShowToast from "../hooks/useShowToast";
 import { formatDistanceToNow } from "date-fns";
-import useCopyUrl from "../hooks/useCopyUrl";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { BsFillImageFill } from "react-icons/bs";
 
 export default function Post({ post, postedBy }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: imageOpen,
-    onOpen: imageOnOpen,
-    onClose: imageClose,
-  } = useDisclosure();
   const [user, setUser] = useState(null);
   const showToast = useShowToast();
   const navigate = useNavigate();
@@ -141,7 +133,6 @@ export default function Post({ post, postedBy }) {
 
               {post.img && (
                 <Box
-                  onClick={onOpen}
                   borderRadius={10}
                   overflow="hidden"
                   border="1px solid"
@@ -150,13 +141,6 @@ export default function Post({ post, postedBy }) {
                   <Image src={post.img} w="full" h="350px" objectFit="cover" />
                 </Box>
               )}
-
-              <ImageModal
-                img={post.img}
-                isOpen={imageOpen}
-                onOpen={imageOnOpen}
-                onClose={imageClose}
-              />
 
               <Flex>
                 <ActionButtons post={post} />
