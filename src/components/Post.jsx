@@ -2,9 +2,18 @@
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
+  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,12 +23,23 @@ import { useEffect, useState } from "react";
 import ImageModal from "./ImageModal";
 import useShowToast from "../hooks/useShowToast";
 import { formatDistanceToNow } from "date-fns";
+import useCopyUrl from "../hooks/useCopyUrl";
+import userAtom from "../atoms/userAtom";
+import { useRecoilValue } from "recoil";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { BsFillImageFill } from "react-icons/bs";
 
 export default function Post({ post, postedBy }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: imageOpen,
+    onOpen: imageOnOpen,
+    onClose: imageClose,
+  } = useDisclosure();
   const [user, setUser] = useState(null);
   const showToast = useShowToast();
   const navigate = useNavigate();
+  const currentUser = useRecoilValue(userAtom);
 
   useEffect(() => {
     const getUser = async () => {
@@ -35,6 +55,23 @@ export default function Post({ post, postedBy }) {
 
     getUser();
   }, [postedBy]);
+
+  const handleDeletePost = async (e) => {
+    try {
+      e.preventDefault();
+
+      const res = await fetch(`/api/posts/${post._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        showToast("Error", data.error, "error");
+      } else {
+        showToast("Success", "Post deleted", "success");
+      }
+    } catch (error) {}
+  };
 
   return (
     <Link to={`${user?.username}/post/${post._id}`}>
@@ -88,8 +125,12 @@ export default function Post({ post, postedBy }) {
                 </Flex>
               </Flex>
 
-              <Flex color={"gray.500"}>
-                <HiDotsHorizontal />
+              <Flex onClick={(e) => e.preventDefault()} color={"gray.500"}>
+                {currentUser?._id === user?._id ? (
+                  <DeleteIcon onClick={onOpen} />
+                ) : (
+                  <HiDotsHorizontal />
+                )}
               </Flex>
             </Flex>
 
@@ -112,9 +153,9 @@ export default function Post({ post, postedBy }) {
 
               <ImageModal
                 img={post.img}
-                isOpen={isOpen}
-                onOpen={onOpen}
-                onClose={onClose}
+                isOpen={imageOpen}
+                onOpen={imageOnOpen}
+                onClose={imageClose}
               />
 
               <Flex>
@@ -124,6 +165,33 @@ export default function Post({ post, postedBy }) {
           </Flex>
         </>
       </Flex>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+
+        <ModalContent width={"auto"} height={"auto"}>
+          <ModalHeader>Deleting Post</ModalHeader>
+          <ModalCloseButton />
+
+          <ModalBody pb={6}>
+            <Text>Are you sure? you want to delete this post?</Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              onClick={handleDeletePost}
+              color={useColorModeValue("#ffffff", "#ffffff")}
+              bg={useColorModeValue("#a12312", "#a12312")}
+              mr={3}
+            >
+              Delete
+            </Button>
+            <Button bg={useColorModeValue("#fafafa", "#1B2730")} mr={3}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Link>
   );
 }

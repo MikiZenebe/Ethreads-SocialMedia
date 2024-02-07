@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import Post from "../models/postModel.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export const createPost = async (req, res) => {
   try {
@@ -82,6 +83,11 @@ export const deletePost = async (req, res) => {
 
     if (post.postedBy.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: "Unauthorized to delete post" });
+    }
+
+    if (post.img) {
+      const imgId = post.img.split("/").pop().split(".")[0];
+      await cloudinary.uploader.destroy(imgId);
     }
 
     await Post.findByIdAndDelete(req.params.id);

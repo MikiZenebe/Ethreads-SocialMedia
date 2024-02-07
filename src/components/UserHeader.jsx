@@ -18,7 +18,7 @@ import { AiFillSetting } from "react-icons/ai";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
 import { Link } from "react-router-dom";
-
+import useCopyUrl from "../hooks/useCopyUrl";
 import useShowToast from "../hooks/useShowToast";
 import useFollowUnfollow from "../hooks/useFollowUnfollow";
 
@@ -27,14 +27,6 @@ export default function UserHeader({ user }) {
   const currentUser = useRecoilValue(userAtom); //logged in user
 
   const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
-
-  //Copy the username link to clipboard
-  const copyURL = () => {
-    const currentURL = window.location.href;
-    navigator.clipboard.writeText(currentURL).then(() => {
-      showToast("Copied", "Profile link copied ⚡", "success");
-    });
-  };
 
   return (
     <VStack gap={6} alignItems={"start"}>
@@ -99,7 +91,7 @@ export default function UserHeader({ user }) {
 
               <Portal>
                 <MenuList>
-                  <MenuItem onClick={copyURL}>Copy to clipboard</MenuItem>
+                  <MenuItem onClick={useCopyUrl()}>Copy to clipboard</MenuItem>
                 </MenuList>
               </Portal>
             </Menu>
