@@ -16,6 +16,10 @@ function useGetUserProfile() {
         if (data.error) {
           showToast("Error", data.error, "error");
         }
+        if (data.isFrozen) {
+          setUser(null);
+          return;
+        }
         setUser(data);
       } catch (error) {
         showToast("Error", error.message, "error");

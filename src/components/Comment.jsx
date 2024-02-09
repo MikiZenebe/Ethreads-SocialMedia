@@ -1,11 +1,7 @@
 import { Avatar, Divider, Flex, Text } from "@chakra-ui/react";
-import { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
-import ActionButtons from "./ActionButtons";
 
-export default function Comment() {
-  const [liked, setLiked] = useState(false);
-
+export default function Comment({ reply }) {
   return (
     <>
       <Flex gap="4" w="full">
@@ -15,10 +11,10 @@ export default function Comment() {
           <Flex justifyContent="space-between" alignItems="center">
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
-                Mikiyas
+                {reply.name}
               </Text>
               <Text fontSize="12" color={"gray.500"}>
-                5 minutes ago
+                {reply.createdAt} ago
               </Text>
             </Flex>
             <Flex>
@@ -26,11 +22,7 @@ export default function Comment() {
             </Flex>
           </Flex>
 
-          <Text>Hey this is awesome 😍</Text>
-          <Text fontSize="sm" color="gray.light">
-            {50 + (liked ? 1 : 0)} likes
-          </Text>
-          <ActionButtons liked={liked} setLiked={setLiked} />
+          <Text>{reply.text}</Text>
         </Flex>
       </Flex>
 

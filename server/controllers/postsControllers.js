@@ -135,6 +135,8 @@ export const replyToPost = async (req, res) => {
     const userId = req.user._id;
     const userProfilePic = req.user.profilePic;
     const username = req.user.username;
+    const name = req.user.name;
+    const createdAt = req.user.createdAt;
 
     if (!text) {
       return res.status(404).json({ message: "Text field is required" });
@@ -145,12 +147,12 @@ export const replyToPost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const reply = { userId, text, userProfilePic, username };
+    const reply = { userId, text, userProfilePic, username, name, createdAt };
 
     post.replies.push(reply);
     await post.save();
 
-    res.status(200).json({ message: "Reply added successfully", reply });
+    res.status(200).json({ reply });
   } catch (error) {
     res.status(500).json({ message: error.message });
     console.log("Error in reply post: ", error.message);

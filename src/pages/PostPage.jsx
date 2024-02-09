@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
   Avatar,
@@ -6,8 +7,6 @@ import {
   Divider,
   Flex,
   Image,
-  Menu,
-  MenuButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -142,7 +141,7 @@ export default function PostPage() {
           </Flex>
         </Flex>
 
-        <Flex mx="4" flexDirection="column" gap="3">
+        <Flex key={currentPost._id} mx="4" flexDirection="column" gap="3">
           <Text _light={{ color: "#1B2730" }} _dark={{ color: "gray.100" }}>
             {currentPost.text}
           </Text>
@@ -188,7 +187,9 @@ export default function PostPage() {
           </Flex>
 
           <Divider my={1} />
-          {/* <Comment /> */}
+          {currentPost.replies.map((reply) => (
+            <Comment key={reply._id} reply={reply} />
+          ))}
         </Flex>
       </Flex>
 
