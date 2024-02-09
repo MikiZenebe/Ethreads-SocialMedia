@@ -23,15 +23,18 @@ import { formatDistanceToNow } from "date-fns";
 import useShowToast from "../hooks/useShowToast";
 import { useParams } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
+import postsAtom from "../atoms/postsAtom";
 
 export default function PostPage() {
   const showToast = useShowToast();
   const { user, loading } = useGetUserProfile();
-  const [post, setPost] = useState(null);
+  const [posts, setPosts] = useRecoilState(postsAtom);
   const { pid } = useParams();
   const currentUser = useRecoilValue(userAtom);
+
+  const currentPost = posts[0];
 
   useEffect(() => {
     const getPost = async () => {
@@ -41,7 +44,7 @@ export default function PostPage() {
         if (data.error) {
           showToast("Error", data.error, "error");
         }
-        setPost(data);
+        setPosts([data]);
       } catch (error) {
         showToast("Error", error.message, "error");
       }
@@ -58,7 +61,7 @@ export default function PostPage() {
     );
   }
 
-  if (!post) return null;
+  if (!currentPost) return null;
 
   return (
     <Flex flexDirection="column">
@@ -96,7 +99,7 @@ export default function PostPage() {
                 </Flex>
 
                 <Text fontSize="11" color={"gray.500"}>
-                  {formatDistanceToNow(new Date(post.createdAt))} ago
+                  {formatDistanceToNow(new Date(currentPost.createdAt))} ago
                 </Text>
               </Flex>
             </Flex>
@@ -122,8 +125,24 @@ export default function PostPage() {
 
           <Flex mx="4" flexDirection="column" gap="3">
             <Text _light={{ color: "#1B2730" }} _dark={{ color: "gray.100" }}>
-              {post.text}
+              {currentPost.text}
             </Text>
+
+            {currentPost.img && (
+              <Box
+                borderRadius={10}
+                overflow="hidden"
+                border="1px solid"
+                borderColor="gray.light"
+              >
+                <Image
+                  src={currentPost.img}
+                  w="full"
+                  h="350px"
+                  objectFit="cover"
+                />
+              </Box>
+            )}
 
             <Flex
               w="full"
@@ -133,8 +152,8 @@ export default function PostPage() {
               alignItems="center"
             ></Flex>
 
-            <Flex>
-              <ActionButtons post={post} />
+            <Flex cursor={"pointer"}>
+              <ActionButtons post={currentPost} />
             </Flex>
 
             <Divider my={1} />
