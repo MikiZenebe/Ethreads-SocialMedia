@@ -66,7 +66,7 @@ export default function Post({ post, postedBy }) {
   };
 
   return (
-    <Link to={`${user?.username}/post/${post._id}`}>
+    <Link to={`/${user?.username}/post/${post._id}`}>
       <Flex flexDirection="column">
         <>
           <Flex
