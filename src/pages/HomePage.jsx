@@ -29,6 +29,8 @@ export default function HomePage() {
     getFeedPosts();
   }, [setPosts]);
 
+  console.log(posts);
+
   return (
     <>
       {loading && (
@@ -45,9 +47,10 @@ export default function HomePage() {
         </Flex>
       )}
 
-      {posts.map((post) => (
-        <Post key={post._id} post={post} postedBy={post.postedBy} />
-      ))}
+      {posts &&
+        posts.map((post) => (
+          <Post key={post._id} post={post} postedBy={post.postedBy} />
+        ))}
     </>
   );
 }
