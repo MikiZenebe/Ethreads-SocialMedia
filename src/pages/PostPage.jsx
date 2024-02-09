@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Avatar,
   Box,
@@ -26,19 +27,20 @@ import { useEffect, useState } from "react";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { formatDistanceToNow } from "date-fns";
 import useShowToast from "../hooks/useShowToast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
 
 export default function PostPage() {
-  const showToast = useShowToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const showToast = useShowToast();
   const { user, loading } = useGetUserProfile();
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { pid } = useParams();
   const currentUser = useRecoilValue(userAtom);
+  const navigate = useNavigate();
 
   const currentPost = posts[0];
 
@@ -72,6 +74,7 @@ export default function PostPage() {
         showToast("Error", data.error, "error");
       } else {
         showToast("Success", "Post deleted", "success");
+        navigate(`/${user.username}`);
       }
     } catch (error) {}
   };
@@ -126,17 +129,17 @@ export default function PostPage() {
             </Flex>
           </Flex>
 
-          <Box onClick={(e) => e.preventDefault()} color={"gray.500"}>
-            <Menu>
-              <MenuButton>
-                {currentUser?._id === user?._id ? (
-                  <DeleteIcon onClick={onOpen} />
-                ) : (
-                  <HiDotsHorizontal />
-                )}
-              </MenuButton>
-            </Menu>
-          </Box>
+          <Flex
+            cursor="pointer"
+            onClick={(e) => e.preventDefault()}
+            color={"gray.500"}
+          >
+            {currentUser?._id === user?._id ? (
+              <DeleteIcon onClick={onOpen} />
+            ) : (
+              <HiDotsHorizontal />
+            )}
+          </Flex>
         </Flex>
 
         <Flex mx="4" flexDirection="column" gap="3">
@@ -187,34 +190,34 @@ export default function PostPage() {
           <Divider my={1} />
           {/* <Comment /> */}
         </Flex>
-
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-
-          <ModalContent width={"auto"} height={"auto"}>
-            <ModalHeader>Deleting Post</ModalHeader>
-            <ModalCloseButton />
-
-            <ModalBody pb={6}>
-              <Text>Are you sure? you want to delete this post?</Text>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button
-                onClick={handleDeletePost}
-                color={useColorModeValue("#ffffff", "#ffffff")}
-                bg={useColorModeValue("#a12312", "#a12312")}
-                mr={3}
-              >
-                Delete
-              </Button>
-              <Button bg={useColorModeValue("#fafafa", "#1B2730")} mr={3}>
-                Cancel
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
       </Flex>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+
+        <ModalContent width={"auto"} height={"auto"}>
+          <ModalHeader>Deleting Post</ModalHeader>
+          <ModalCloseButton />
+
+          <ModalBody pb={6}>
+            <Text>Are you sure? you want to delete this post?</Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              onClick={handleDeletePost}
+              color={useColorModeValue("#ffffff", "#ffffff")}
+              bg={useColorModeValue("#a12312", "#a12312")}
+              mr={3}
+            >
+              Delete
+            </Button>
+            <Button bg={useColorModeValue("#fafafa", "#1B2730")} mr={3}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 }
