@@ -25,7 +25,7 @@ import { ActionButtons, Comment } from "../components/index";
 import { useEffect, useState } from "react";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { formatDistanceToNow } from "date-fns";
-import useShowToast from "../hooks/useShowToast";
+import useShowToast from "../hooks/useShowToast.js";
 import { useNavigate, useParams } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
