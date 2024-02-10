@@ -18,11 +18,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
-import useShowToast from "../hooks/useShowToast";
+import toast from "react-hot-toast";
 import userAtom from "../atoms/userAtom";
 
 export default function SignupCard() {
-  const showToast = useShowToast();
   const [showPassword, setShowPassword] = useState(false);
   const setAuthScreen = useSetRecoilState(authScreenAtom);
   const setUser = useRecoilState(userAtom);
@@ -47,9 +46,9 @@ export default function SignupCard() {
       const data = await res.json();
 
       if (data.error) {
-        showToast("Error", data.error, "error");
+        toast.error(data.error);
       } else {
-        showToast("Success", "User registred successfully", "success");
+        toast.error("User registerd succesfully");
         setTimeout(() => {
           window.location.replace("/");
         });

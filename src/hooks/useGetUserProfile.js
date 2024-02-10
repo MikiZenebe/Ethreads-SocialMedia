@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useShowToast from "./useShowToast";
+import toast from "react-hot-toast";
 
 function useGetUserProfile() {
-  const showToast = useShowToast();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const { username } = useParams();
@@ -14,7 +14,7 @@ function useGetUserProfile() {
         const res = await fetch(`/api/users/profile/${username}`);
         const data = await res.json();
         if (data.error) {
-          showToast("Error", data.error, "error");
+          toast.error(data.error);
         }
         if (data.isFrozen) {
           setUser(null);
@@ -22,14 +22,14 @@ function useGetUserProfile() {
         }
         setUser(data);
       } catch (error) {
-        showToast("Error", error.message, "error");
+        toast.error(error.message);
       } finally {
         setLoading(false);
       }
     };
 
     getUser();
-  }, [showToast, username]);
+  }, []);
 
   return { loading, user };
 }

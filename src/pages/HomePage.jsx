@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Flex, Spinner } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import useShowToast from "../hooks/useShowToast";
+import toast from "react-hot-toast";
 import { Post } from "../components";
 import postsAtom from "../atoms/postsAtom";
 import { useRecoilState } from "recoil";
@@ -9,7 +9,6 @@ import { useRecoilState } from "recoil";
 export default function HomePage() {
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [loading, setLoading] = useState(true);
-  const showToast = useShowToast();
 
   useEffect(() => {
     const getFeedPosts = async () => {
@@ -21,7 +20,7 @@ export default function HomePage() {
 
         setPosts(data);
       } catch (error) {
-        showToast("Error", error.message, "error");
+        toast.error(error.message);
       } finally {
         setLoading(false);
       }

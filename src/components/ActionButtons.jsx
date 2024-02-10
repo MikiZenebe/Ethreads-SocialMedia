@@ -18,7 +18,7 @@ import {
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
-import useShowToast from "../hooks/useShowToast";
+import toast from "react-hot-toast";
 import postsAtom from "../atoms/postsAtom";
 
 const Actions = ({ post }) => {
@@ -29,7 +29,6 @@ const Actions = ({ post }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [reply, setReply] = useState("");
 
-  const showToast = useShowToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLikeAndUnlike = async () => {
@@ -49,7 +48,7 @@ const Actions = ({ post }) => {
         },
       });
       const data = await res.json();
-      if (data.error) return showToast("Error", data.error, "error");
+      if (data.error) return toast.error(data.error);
 
       if (!liked) {
         // add the id of the current user to post.likes array
@@ -73,7 +72,7 @@ const Actions = ({ post }) => {
 
       setLiked(!liked);
     } catch (error) {
-      showToast("Error", error.message, "error");
+      toast.error(error.message);
     } finally {
       setIsLiking(false);
     }
@@ -97,7 +96,7 @@ const Actions = ({ post }) => {
         body: JSON.stringify({ text: reply }),
       });
       const data = await res.json();
-      if (data.error) return showToast("Error", data.error, "error");
+      if (data.error) return toast.error(data.error);
 
       const updatedPosts = posts.map((p) => {
         if (p._id === post._id) {
@@ -106,11 +105,11 @@ const Actions = ({ post }) => {
         return p;
       });
       setPosts(updatedPosts);
-      showToast("Success", "Reply posted successfully", "success");
+      toast.error("Reply Added");
       onClose();
       setReply("");
     } catch (error) {
-      showToast("Error", error.message, "error");
+      toast.error(error.message);
     } finally {
       setIsReplying(false);
     }

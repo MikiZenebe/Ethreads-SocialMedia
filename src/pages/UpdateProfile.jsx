@@ -14,11 +14,10 @@ import { useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import usePreviewImg from "../hooks/usePreviewImg";
-import useShowToast from "../hooks/useShowToast";
+import toast from "react-hot-toast";
 
 export default function UpdateProfile() {
   const fileRef = useRef(null);
-  const showToast = useShowToast();
   const [user, setUser] = useRecoilState(userAtom);
   const [inputs, setInputs] = useState({
     name: user.name,
@@ -46,15 +45,14 @@ export default function UpdateProfile() {
       const data = await res.json();
 
       if (data.error) {
-        ``;
-        showToast("Error", error, "error");
+        toast.error(data.error);
       } else {
-        showToast("Success", "Profile updated 🚀🚀", "success");
+        toast.success("Profile Updated");
         setUser(data);
         localStorage.setItem("user", JSON.stringify(data));
       }
     } catch (error) {
-      showToast("Error", error, "error");
+      toast.error(error);
     } finally {
       setUpdating(false);
     }

@@ -19,14 +19,13 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
-import useShowToast from "../hooks/useShowToast";
+import toast from "react-hot-toast";
 import userAtom from "../atoms/userAtom";
 
 export default function LoginCard() {
   const [showPassword, setShowPassword] = useState(false);
   const setAuthScreen = useSetRecoilState(authScreenAtom);
   const setUser = useRecoilState(userAtom);
-  const showToast = useShowToast();
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -46,9 +45,9 @@ export default function LoginCard() {
       const data = await res.json();
 
       if (data.error) {
-        showToast("Error", data.error, "error");
+        toast.error(data.error);
       } else {
-        showToast("Success", "User logged in successfully", "success");
+        toast.success("User logged in successfully");
 
         setTimeout(() => {
           window.location.replace("/");

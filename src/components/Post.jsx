@@ -20,7 +20,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { HiDotsHorizontal } from "react-icons/hi";
 import ActionButtons from "./ActionButtons";
 import { useEffect, useState } from "react";
-import useShowToast from "../hooks/useShowToast";
+import toast from "react-hot-toast";
 import { formatDistanceToNow } from "date-fns";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
@@ -29,7 +29,6 @@ import { DeleteIcon } from "@chakra-ui/icons";
 export default function Post({ post, postedBy }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [user, setUser] = useState(null);
-  const showToast = useShowToast();
   const navigate = useNavigate();
   const currentUser = useRecoilValue(userAtom);
 
@@ -40,7 +39,7 @@ export default function Post({ post, postedBy }) {
         const data = await res.json();
         setUser(data);
       } catch (error) {
-        showToast("Error", error.message, "error");
+        toast.error(error.message);
         setUser(null);
       }
     };
@@ -58,9 +57,9 @@ export default function Post({ post, postedBy }) {
       const data = await res.json();
 
       if (data.error) {
-        showToast("Error", data.error, "error");
+        toast.error(data.error);
       } else {
-        showToast("Success", "Post deleted", "success");
+        toast.error("Post deleted");
       }
     } catch (error) {}
   };

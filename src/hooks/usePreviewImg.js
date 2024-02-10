@@ -1,9 +1,8 @@
 import { useState } from "react";
-import useShowToast from "./useShowToast";
+import toast from "react-hot-toast";
 
 export default function usePreviewImg() {
   const [imgUrl, setImgUrl] = useState(null);
-  const showToast = useShowToast();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -17,7 +16,7 @@ export default function usePreviewImg() {
 
       reader.readAsDataURL(file);
     } else {
-      showToast("Invalid file type", "Please select an image file", "error");
+      toast.error("Please select an image file");
       setImgUrl(null);
     }
   };

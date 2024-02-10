@@ -1,10 +1,9 @@
 import userAtom from "../atoms/userAtom";
 import { useSetRecoilState } from "recoil";
-import useShowToast from "./useShowToast";
+import toast from "react-hot-toast";
 
 const useLogout = () => {
   const setUser = useSetRecoilState(userAtom);
-  const showToast = useShowToast();
 
   const logout = async () => {
     try {
@@ -17,9 +16,9 @@ const useLogout = () => {
       const data = await res.json();
 
       if (data.error) {
-        showToast("Error", data.error, "error");
+        toast.error(data.error);
       } else {
-        showToast("Success", "Logout Successfully", "success");
+        toast.error("Logout Successfully");
         setTimeout(() => {
           window.location.replace("/auth");
         });
