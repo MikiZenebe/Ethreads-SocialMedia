@@ -25,7 +25,7 @@ import { ActionButtons, Comment } from "../components/index";
 import { useEffect, useState } from "react";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { formatDistanceToNow } from "date-fns";
-import useShowToast from "../hooks/useShowToast.js";
+import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -34,7 +34,7 @@ import postsAtom from "../atoms/postsAtom";
 
 export default function PostPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const showToast = useShowToast();
+
   const { user, loading } = useGetUserProfile();
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { pid } = useParams();
@@ -49,11 +49,11 @@ export default function PostPage() {
         const res = await fetch(`/api/posts/${pid}`);
         const data = await res.json();
         if (data.error) {
-          showToast("Error", data.error, "error");
+          toast.error(data.error);
         }
         setPosts([data]);
       } catch (error) {
-        showToast("Error", error.message, "error");
+        toast.error(error.message);
       }
     };
 
@@ -70,9 +70,9 @@ export default function PostPage() {
       const data = await res.json();
 
       if (data.error) {
-        showToast("Error", data.error, "error");
+        toast.error(data.error);
       } else {
-        showToast("Success", "Post deleted", "success");
+        toast.success("Post Deleted");
         navigate(`/${user.username}`);
       }
     } catch (error) {}

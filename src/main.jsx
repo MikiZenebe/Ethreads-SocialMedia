@@ -7,6 +7,7 @@ import { mode } from "@chakra-ui/theme-tools";
 import { extendTheme, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
+import { Toaster } from "react-hot-toast";
 
 const styles = {
   global: (props) => ({
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <RecoilRoot>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
+        <Toaster />
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <App />
       </ChakraProvider>
