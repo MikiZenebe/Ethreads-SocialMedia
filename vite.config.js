@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: "https://ethreads-social-media.vercel.app/",
+    port: 3000,
 
     //Get rid of the CORS error
     proxy: {
