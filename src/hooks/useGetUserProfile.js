@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { APIEndPoint } from "../baseUrl";
 
 function useGetUserProfile() {
   const [user, setUser] = useState(null);
@@ -12,7 +11,7 @@ function useGetUserProfile() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${APIEndPoint}/api/users/profile/${username}`);
+        const res = await fetch(`/api/users/profile/${username}`);
         const data = await res.json();
         if (data.error) {
           toast.error(data.error);

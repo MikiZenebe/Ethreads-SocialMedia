@@ -25,7 +25,6 @@ import { formatDistanceToNow } from "date-fns";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { APIEndPoint } from "../baseUrl";
 
 export default function Post({ post, postedBy }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -36,7 +35,7 @@ export default function Post({ post, postedBy }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${APIEndPoint}/api/users/profile/${postedBy}`);
+        const res = await fetch(`/api/users/profile/${postedBy}`);
         const data = await res.json();
         setUser(data);
       } catch (error) {
@@ -52,7 +51,7 @@ export default function Post({ post, postedBy }) {
     try {
       e.preventDefault();
 
-      const res = await fetch(`${APIEndPoint}/api/posts/${post._id}`, {
+      const res = await fetch(`/api/posts/${post._id}`, {
         method: "DELETE",
       });
       const data = await res.json();

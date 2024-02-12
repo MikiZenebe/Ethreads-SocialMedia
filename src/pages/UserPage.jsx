@@ -5,7 +5,6 @@ import { Flex, Spinner } from "@chakra-ui/react";
 import postsAtom from "../atoms/postsAtom";
 import { useRecoilState } from "recoil";
 import useGetUserProfile from "../hooks/useGetUserProfile";
-import { APIEndPoint } from "../baseUrl";
 
 export default function UserPage() {
   const { user, loading } = useGetUserProfile();
@@ -18,7 +17,7 @@ export default function UserPage() {
       setFetchingPosts(true);
 
       try {
-        const res = await fetch(`${APIEndPoint}/api/posts/user/${username}`);
+        const res = await fetch(`/api/posts/user/${username}`);
         const data = await res.json();
 
         setPosts(data);

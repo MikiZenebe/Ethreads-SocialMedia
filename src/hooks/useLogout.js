@@ -1,14 +1,13 @@
 import userAtom from "../atoms/userAtom";
 import { useSetRecoilState } from "recoil";
 import toast from "react-hot-toast";
-import { APIEndPoint } from "../baseUrl";
 
 const useLogout = () => {
   const setUser = useSetRecoilState(userAtom);
 
   const logout = async () => {
     try {
-      const res = await fetch(APIEndPoint + "/api/users/logout", {
+      const res = await fetch("/api/users/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

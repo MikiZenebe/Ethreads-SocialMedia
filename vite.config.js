@@ -9,11 +9,11 @@ export default defineConfig({
 
     //Get rid of the CORS error
     proxy: {
-      // "/api": {
-      //   target: "https://threads-server-wor5.onrender.com",
-      //   changeOrigin: true,
-      //   secure: false,
-      // },
+      "/api": {
+        target: "https://threads-server-wor5.onrender.com",
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });

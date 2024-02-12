@@ -15,7 +15,6 @@ import { useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import usePreviewImg from "../hooks/usePreviewImg";
 import toast from "react-hot-toast";
-import { APIEndPoint } from "../baseUrl";
 
 export default function UpdateProfile() {
   const fileRef = useRef(null);
@@ -36,7 +35,7 @@ export default function UpdateProfile() {
     setUpdating(true);
 
     try {
-      const res = await fetch(`${APIEndPoint}/api/users/update/${user._id}`, {
+      const res = await fetch(`/api/users/update/${user._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
