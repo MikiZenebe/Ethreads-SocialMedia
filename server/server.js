@@ -5,9 +5,11 @@ import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import { v2 as cloudinary } from "cloudinary";
+import cors from "cors";
 
 const app = express();
 dotenv.config();
+app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 

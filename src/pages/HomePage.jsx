@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { Post } from "../components";
 import postsAtom from "../atoms/postsAtom";
 import { useRecoilState } from "recoil";
+import { APIEndPoint } from "../baseUrl";
 
 export default function HomePage() {
   const [posts, setPosts] = useRecoilState(postsAtom);
@@ -15,7 +16,7 @@ export default function HomePage() {
       setLoading(true);
 
       try {
-        const res = await fetch("/api/posts/feed");
+        const res = await fetch(APIEndPoint + "/api/posts/feed");
         const data = await res.json();
 
         setPosts(data);
