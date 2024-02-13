@@ -1,7 +1,9 @@
 import { Avatar, Divider, Flex, Text } from "@chakra-ui/react";
+import { formatDistanceToNow } from "date-fns";
 import { BsThreeDots } from "react-icons/bs";
 
 export default function Comment({ reply }) {
+  console.log(reply);
   return (
     <>
       <Flex gap="4" w="full">
@@ -14,7 +16,7 @@ export default function Comment({ reply }) {
                 {reply.name}
               </Text>
               <Text fontSize="12" color={"gray.500"}>
-                {reply.createdAt} ago
+                {formatDistanceToNow(new Date(reply.createdAt))} ago
               </Text>
             </Flex>
             <Flex>

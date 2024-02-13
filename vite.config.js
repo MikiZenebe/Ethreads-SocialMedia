@@ -10,7 +10,8 @@ export default defineConfig({
     //Get rid of the CORS error
     proxy: {
       "/api": {
-        target: "https://threads-server-wor5.onrender.com",
+        target: "http://localhost:5000",
+        // target: "https://threads-server-wor5.onrender.com",
         changeOrigin: true,
         secure: false,
       },
