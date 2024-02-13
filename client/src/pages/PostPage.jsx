@@ -31,6 +31,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import postsAtom from "../atoms/postsAtom";
+import { APIEndPoint } from "../baseUrl";
 
 export default function PostPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,7 +46,7 @@ export default function PostPage() {
   useEffect(() => {
     const getPost = async () => {
       try {
-        const res = await fetch(`/api/posts/${pid}`);
+        const res = await fetch(`${APIEndPoint}/api/posts/${pid}`);
         const data = await res.json();
         if (data.error) {
           toast.error(data.error);
@@ -63,7 +64,7 @@ export default function PostPage() {
     try {
       e.preventDefault();
 
-      const res = await fetch(`/api/posts/${currentPost._id}`, {
+      const res = await fetch(`${APIEndPoint}/api/posts/${currentPost._id}`, {
         method: "DELETE",
       });
       const data = await res.json();

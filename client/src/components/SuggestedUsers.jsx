@@ -4,6 +4,7 @@ import SuggestedUser from "./SuggUser";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
+import { APIEndPoint } from "../baseUrl";
 
 const SuggestedUsers = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const SuggestedUsers = () => {
     const getSuggestedUsers = async () => {
       setLoading(true);
       try {
-        const res = await fetch("/api/users/suggested");
+        const res = await fetch(APIEndPoint + "/api/users/suggested");
         const data = await res.json();
         if (data.error) {
           toast(data.error);

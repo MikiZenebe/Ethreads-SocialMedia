@@ -26,6 +26,7 @@ import userAtom from "../atoms/userAtom";
 import toast from "react-hot-toast";
 import postsAtom from "../atoms/postsAtom";
 import { useParams } from "react-router-dom";
+import { APIEndPoint } from "../baseUrl";
 
 const MAX_CHAR = 500;
 
@@ -57,7 +58,7 @@ export default function CreatePost() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/posts/create", {
+      const res = await fetch(APIEndPoint + "/api/posts/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
