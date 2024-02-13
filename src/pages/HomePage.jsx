@@ -13,6 +13,7 @@ export default function HomePage() {
   useEffect(() => {
     const getFeedPosts = async () => {
       setLoading(true);
+      setPosts([]);
 
       try {
         const res = await fetch("/api/posts/feed");
@@ -27,8 +28,6 @@ export default function HomePage() {
     };
     getFeedPosts();
   }, [setPosts]);
-
-  console.log(posts);
 
   return (
     <>

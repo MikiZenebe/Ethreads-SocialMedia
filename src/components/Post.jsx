@@ -23,14 +23,16 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { formatDistanceToNow } from "date-fns";
 import userAtom from "../atoms/userAtom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { DeleteIcon } from "@chakra-ui/icons";
+import postsAtom from "../atoms/postsAtom";
 
 export default function Post({ post, postedBy }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const currentUser = useRecoilValue(userAtom);
+  const [posts, setPosts] = useRecoilState(postsAtom);
 
   useEffect(() => {
     const getUser = async () => {
@@ -60,6 +62,7 @@ export default function Post({ post, postedBy }) {
         toast.error(data.error);
       } else {
         toast.success("Post deleted");
+        setPosts((prev) => prev.filter((p) => p._id !== post._id));
       }
     } catch (error) {}
   };

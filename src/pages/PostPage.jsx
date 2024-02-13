@@ -34,7 +34,6 @@ import postsAtom from "../atoms/postsAtom";
 
 export default function PostPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const { user, loading } = useGetUserProfile();
   const [posts, setPosts] = useRecoilState(postsAtom);
   const { pid } = useParams();

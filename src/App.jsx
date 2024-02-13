@@ -31,11 +31,20 @@ export default function App() {
           element={user ? <UpdateProfile /> : <Navigate to="/auth" />}
         />
 
-        <Route path="/:username" element={<UserPage />} />
+        <Route
+          path="/:username"
+          element={
+            user ? (
+              <>
+                <UserPage /> <CreatePost />
+              </>
+            ) : (
+              <UserPage />
+            )
+          }
+        />
         <Route path="/:username/post/:pid" element={<PostPage />} />
       </Routes>
-
-      {user && <CreatePost />}
     </Container>
   );
 }

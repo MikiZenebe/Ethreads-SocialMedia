@@ -15,7 +15,7 @@ export default function Comment({ reply }) {
                 {reply.name}
               </Text>
               <Text fontSize="12" color={"gray.500"}>
-                {formatDistanceToNow(new Date(reply.createdAt))} ago
+                @{reply.username}
               </Text>
             </Flex>
             <Flex>

@@ -20,6 +20,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import toast from "react-hot-toast";
 import postsAtom from "../atoms/postsAtom";
+import { useNavigate } from "react-router-dom";
 
 const Actions = ({ post }) => {
   const user = useRecoilValue(userAtom);
@@ -86,6 +87,7 @@ const Actions = ({ post }) => {
         body: JSON.stringify({ text: reply }),
       });
       const data = await res.json();
+
       if (data.error) return toast.error(data.error);
 
       const updatedPosts = posts.map((p) => {

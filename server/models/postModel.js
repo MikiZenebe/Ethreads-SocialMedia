@@ -44,7 +44,11 @@ const PostSchema = mongoose.Schema(
         name: {
           type: String,
         },
-        createdAt: { type: Date, default: Date.now() },
+
+        date: {
+          type: Date,
+          default: Date.now(),
+        },
       },
     ],
   },
