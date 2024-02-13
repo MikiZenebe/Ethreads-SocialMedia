@@ -18,7 +18,7 @@ const useLogout = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
-        toast.error("Logout Successfully");
+        toast.success("Logout Successfully");
         setTimeout(() => {
           window.location.replace("/auth");
         });

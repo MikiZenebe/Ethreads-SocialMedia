@@ -8,7 +8,6 @@ import {
   Portal,
   MenuList,
   MenuItem,
-  useToast,
   Button,
 } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/react";
@@ -19,7 +18,6 @@ import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
 import { Link } from "react-router-dom";
 import useCopyUrl from "../hooks/useCopyUrl";
-import toast from "react-hot-toast";
 import useFollowUnfollow from "../hooks/useFollowUnfollow";
 
 export default function UserHeader({ user }) {

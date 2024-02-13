@@ -59,7 +59,7 @@ export default function Post({ post, postedBy }) {
       if (data.error) {
         toast.error(data.error);
       } else {
-        toast.error("Post deleted");
+        toast.success("Post deleted");
       }
     } catch (error) {}
   };

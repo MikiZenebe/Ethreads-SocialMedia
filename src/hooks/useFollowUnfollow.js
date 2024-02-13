@@ -32,7 +32,7 @@ const useFollowUnfollow = (user) => {
       }
 
       if (following) {
-        showToast("Success", `Unfollowed ${user.name}`, "success");
+        toast.success(`Unfollowed ${user.name}`);
         user.followers.pop(); // simulate removing from followers
       } else {
         toast.success(`Followed ${user.username}`);

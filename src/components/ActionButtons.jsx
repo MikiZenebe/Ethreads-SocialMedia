@@ -32,12 +32,7 @@ const Actions = ({ post }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLikeAndUnlike = async () => {
-    if (!user)
-      return showToast(
-        "Error",
-        "You must be logged in to like a post",
-        "error"
-      );
+    if (!user) return toast.error("You must be logged in to like a post");
     if (isLiking) return;
     setIsLiking(true);
     try {
@@ -79,12 +74,7 @@ const Actions = ({ post }) => {
   };
 
   const handleReply = async () => {
-    if (!user)
-      return showToast(
-        "Error",
-        "You must be logged in to reply to a post",
-        "error"
-      );
+    if (!user) return toast.error("You must be logged in to reply to a post");
     if (isReplying) return;
     setIsReplying(true);
     try {
@@ -105,7 +95,7 @@ const Actions = ({ post }) => {
         return p;
       });
       setPosts(updatedPosts);
-      toast.error("Reply Added");
+      toast.success("Reply Added");
       onClose();
       setReply("");
     } catch (error) {

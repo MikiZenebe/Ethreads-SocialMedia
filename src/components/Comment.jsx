@@ -3,7 +3,6 @@ import { formatDistanceToNow } from "date-fns";
 import { BsThreeDots } from "react-icons/bs";
 
 export default function Comment({ reply }) {
-  console.log(reply);
   return (
     <>
       <Flex gap="4" w="full">

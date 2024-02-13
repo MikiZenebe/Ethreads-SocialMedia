@@ -5,7 +5,7 @@ export default function useCopyUrl() {
   const copyURL = () => {
     const currentURL = window.location.href;
     navigator.clipboard.writeText(currentURL).then(() => {
-      toast.error("Profile link copied");
+      toast.success("Profile link copied");
     });
   };
 

@@ -48,7 +48,7 @@ export default function SignupCard() {
       if (data.error) {
         toast.error(data.error);
       } else {
-        toast.error("User registerd succesfully");
+        toast.success("User registerd succesfully");
         setTimeout(() => {
           window.location.replace("/");
         });
