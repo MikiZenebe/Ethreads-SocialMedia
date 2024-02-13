@@ -21,7 +21,6 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
 import toast from "react-hot-toast";
 import userAtom from "../atoms/userAtom";
-import { APIEndPoint } from "../baseUrl";
 
 export default function LoginCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +35,7 @@ export default function LoginCard() {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const res = await fetch(APIEndPoint + "/api/users/login", {
+      const res = await fetch("/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
