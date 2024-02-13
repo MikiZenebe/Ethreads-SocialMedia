@@ -1,1 +1,1 @@
-export const APIEndPoint = import.meta.env.VITE_API_URL;
+export const APIEndPoint = `${process.env.REACT_APP_API_URL}`;
