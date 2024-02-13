@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Post } from "../components";
 import postsAtom from "../atoms/postsAtom";
 import { useRecoilState } from "recoil";
+import SuggestedUsers from "../components/SuggestedUsers";
 
 export default function HomePage() {
   const [posts, setPosts] = useRecoilState(postsAtom);
@@ -48,6 +49,10 @@ export default function HomePage() {
       {posts.map((post) => (
         <Post key={post._id} post={post} postedBy={post.postedBy} />
       ))}
+
+      <Box flex={30} display={{}}>
+        <SuggestedUsers />
+      </Box>
     </>
   );
 }
