@@ -12,10 +12,10 @@ const SuggestedUser = ({ user }) => {
         <Avatar src={user.profilePic} />
         <Box>
           <Text fontSize={"sm"} fontWeight={"bold"}>
-            {user.username}
+            {user.name}
           </Text>
           <Text color={"gray.light"} fontSize={"sm"}>
-            {user.name}
+            {user.username}
           </Text>
         </Box>
       </Flex>
