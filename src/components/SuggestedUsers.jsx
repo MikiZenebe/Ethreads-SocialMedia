@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 const SuggestedUsers = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [suggestedUsers, setSuggestedUsers] = useRecoilState(friendsAtom);
+  const [suggestedUsers, setSuggestedUsers] = useState([]);
 
   useEffect(() => {
     const getSuggestedUsers = async () => {
