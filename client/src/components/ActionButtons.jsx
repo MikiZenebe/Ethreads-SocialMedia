@@ -20,6 +20,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import toast from "react-hot-toast";
 import postsAtom from "../atoms/postsAtom";
+import { APIEndPoint } from "../baseUrl";
 
 const Actions = ({ post }) => {
   const user = useRecoilValue(userAtom);
@@ -78,7 +79,7 @@ const Actions = ({ post }) => {
     if (isReplying) return;
     setIsReplying(true);
     try {
-      const res = await fetch("/api/posts/reply/" + post._id, {
+      const res = await fetch(APIEndPoint + "/api/posts/reply/" + post._id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
