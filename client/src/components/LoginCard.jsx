@@ -44,6 +44,7 @@ export default function LoginCard() {
         body: JSON.stringify(inputs),
       });
       const data = await res.json();
+      console.log("response ", res);
 
       if (data.error) {
         toast.error(data.error);
